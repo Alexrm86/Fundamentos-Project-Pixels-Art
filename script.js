@@ -1,4 +1,4 @@
-const palettas = Array.from(document.getElementsByClassName('color')); // https://www.javascripttutorial.net/es6/javascript-array-from/
+const palettas = Array.from(document.getElementsByClassName('color'));
 const pixelBoard = document.getElementById('pixel-board');
 let pixelSize = 5;
 let colorSelected = palettas[0];
@@ -13,8 +13,6 @@ function randomColors() {
     const green = randomNumberFunc();
     const blue = randomNumberFunc();
     const rgb = `rgb(${red}, ${green}, ${blue})`;
-    //  https://stackoverflow.com/questions/10929458/sass-converting-hex-to-rgba-for-background-opacity/10939797#10939797
-    //  
     return rgb;
 }
 
