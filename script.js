@@ -7,7 +7,7 @@ function getRandomRgb() {
     const g = Math.ceil((Math.random()) * 255);
     const b = Math.ceil((Math.random()) * 255);
     return `rgb(${r}, ${g}, ${b})`;
-    //     https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+    //     https://stackoverflow.com/questions/10929458/sass-converting-hex-to-rgba-for-background-opacity/10939797#10939797
     // 
 }
 
