@@ -7,6 +7,8 @@ function getRandomRgb() {
     const g = Math.ceil((Math.random()) * 255);
     const b = Math.ceil((Math.random()) * 255);
     return `rgb(${r}, ${g}, ${b})`;
+    //     https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+    // 
 }
 
 for (let i = 0; i < 10; i += 1) {
@@ -32,6 +34,7 @@ function createSquare(setNumber) {
             const pixel = document.createElement('div');
             pixel.className = 'pixel';
             row.appendChild(pixel);
+            // https://stackoverflow.com/questions/33679875/whats-the-meaning-of-the-row-class-in-bootstrap-its-difference-from-containe
         }
     }
 }
