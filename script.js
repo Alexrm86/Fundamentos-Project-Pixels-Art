@@ -1,115 +1,92 @@
-const palettas = Array.from(document.getElementsByClassName('color'));
-const pixelBoard = document.getElementById('pixel-board');
-let pixelSize = 5;
-let colorSelected = palettas[0];
+const pixelRow = document.getElementById('pixel-board');
 
-function randomNumberFunc() {
-    const randomNumber = Math.floor(Math.random() * 255);
-    return randomNumber;
+
+
+function getRandomRgb() {
+    const r = Math.ceil((Math.random()) * 255);
+    const g = Math.ceil((Math.random()) * 255);
+    const b = Math.ceil((Math.random()) * 255);
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
-function randomColors() {
-    const red = randomNumberFunc();
-    const green = randomNumberFunc();
-    const blue = randomNumberFunc();
-    const rgb = `rgb(${red}, ${green}, ${blue})`;
-    return rgb;
+for (let i = 0; i < 10; i += 1) {
+    console.log(getRandomRgb());
 }
 
-function createpalettas() {
-    for (let index = 1; index < palettas.length; index += 1) {
-        palettas[index].style.backgroundColor = randomColors();
+function colorPallet() {
+    const paletteColor = document.getElementsByClassName('color');
+    paletteColor[0].style.backgroundColor = 'black';
+    paletteColor[0].classList.add('selected');
+    paletteColor[1].style.backgroundColor = getRandomRgb();
+    paletteColor[2].style.backgroundColor = getRandomRgb();
+    paletteColor[3].style.backgroundColor = getRandomRgb();
+}
+colorPallet();
+
+function createSquare(setNumber) {
+    for (let index = 0; index < setNumber; index += 1) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        pixelRow.appendChild(row);
+        for (let indexPix = 0; indexPix < setNumber; indexPix += 1) {
+            const pixel = document.createElement('div');
+            pixel.className = 'pixel';
+            row.appendChild(pixel);
+        }
     }
 }
+createSquare(5);
 
-function defineSizeOfPixelBoard(pixels) {
-    const tamanhoBoard = 42 * pixels;
-    pixelBoard.style.width = `${tamanhoBoard}px`;
-    pixelBoard.style.height = `${tamanhoBoard}px`;
-}
-
-function createPixels(num) {
-    defineSizeOfPixelBoard(num);
-    const pixelCount = num ** 2;
-    for (let index = 0; index < pixelCount; index += 1) {
-        const div = document.createElement('div');
-        div.className = 'pixel';
-        div.style.width = '40px';
-        div.style.height = '40px';
-        div.style.border = '1px solid black';
-        div.style.backgroundColor = 'white';
-        pixelBoard.appendChild(div);
-    }
-}
-
-function selectColor() {
-    palettas.forEach((color) => {
-        color.addEventListener('click', (event) => {
-            colorSelected.classList.remove('selected');
-            event.target.classList.add('selected');
-            colorSelected = event.target;
-        });
+function buttonInput() {
+    const myButton = document.getElementById('generate-board');
+    myButton.addEventListener('click', () => {
+        const myValue = document.getElementById('board-size');
+        pixelRow.innerHTML = '';
+        if (myValue.value <= 0) {
+            alert('Board inválido!');
+        } else if (myValue.value < 5) {
+            myValue.value = 5;
+        } else if (myValue.value > 50) {
+            myValue.value = 50;
+        }
+        createSquare(myValue.value);
     });
 }
+buttonInput();
 
-function clickPaint() {
-    const allPixels = Array.from(document.getElementsByClassName('pixel'));
-    allPixels.forEach((pixel) => {
-        pixel.addEventListener('click', (event) => {
-            const pixelForPaint = event;
-            pixelForPaint.target.style.backgroundColor = colorSelected.style.backgroundColor;
-        });
+function clickSelectedColor() {
+    const colorSelected = document.getElementById('color-palette');
+    colorSelected.addEventListener('click', (event) => {
+        const myEvent = event.target;
+        const divColor = document.querySelectorAll('.color');
+        for (let index = 0; index < divColor.length; index += 1) {
+            divColor[index].classList.remove('selected');
+            if (myEvent.className === 'color') {
+                myEvent.classList.add('selected');
+            }
+        }
     });
 }
+clickSelectedColor();
 
-function newBoard() {
-    let boardChild = pixelBoard.lastElementChild;
-    while (boardChild) {
-        pixelBoard.removeChild(boardChild);
-        boardChild = pixelBoard.lastElementChild;
-    }
-    createPixels(pixelSize);
-    selectColor();
-    clickPaint();
-}
-
-function clearBoard() {
-    const clearButton = document.getElementById('clear-board');
-    clearButton.addEventListener('click', newBoard);
-}
-
-function catchBoardSize() {
-    const input = document.getElementById('board-size');
-    if (input.value === '') {
-        return alert('Board inválido!');
-    }
-    return input.value;
-}
-
-function inputValueFunc() {
-    const inputValue = catchBoardSize();
-    if (inputValue < 5) {
-        pixelSize = 5;
-    } else if (inputValue > 50) {
-        pixelSize = 50;
-    } else {
-        pixelSize = inputValue;
-    }
-}
-
-function changeBoard() {
-    const button = document.getElementById('generate-board');
-    button.addEventListener('click', () => {
-        inputValueFunc();
-        newBoard();
+function paintPixel() {
+    const bodyTableColor = document.getElementById('pixel-board');
+    bodyTableColor.addEventListener('click', (e) => {
+        const myNewEvent = e.target;
+        const newDivs = document.querySelector('.selected');
+        console.log(myNewEvent);
+        if (myNewEvent.className === 'pixel') {
+            myNewEvent.style.backgroundColor = newDivs.style.backgroundColor;
+        }
     });
 }
+paintPixel();
 
-window.onload = () => {
-    createpalettas();
-    createPixels(pixelSize);
-    selectColor();
-    clickPaint();
-    clearBoard();
-    changeBoard();
-};
+function buttonCleanSquare() {
+    const bodyTableColor = document.querySelectorAll('.pixel');
+    for (let index = 0; index < bodyTableColor.length; index += 1) {
+        bodyTableColor[index].style.backgroundColor = 'rgb(255, 255, 255)';
+    }
+}
+const button = document.getElementById('clear-board');
+button.addEventListener('click', buttonCleanSquare);
